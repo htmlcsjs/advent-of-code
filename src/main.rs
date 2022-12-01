@@ -4,9 +4,13 @@ use std::{
     path::Path,
 };
 
+use crate::day_one::DayOne2022;
+
+mod day_one;
+
 trait Day {
-    fn first_puzzle(&self, input: &mut dyn BufRead) -> String;
-    fn second_puzzle(&self, input: &mut dyn BufRead) -> String;
+    fn first_puzzle(&self, input: &mut BufReader<File>) -> String;
+    fn second_puzzle(&self, input: &mut BufReader<File>) -> String;
 
     fn day(&self) -> i16;
     fn year(&self) -> i16;
@@ -14,13 +18,13 @@ trait Day {
 
 struct Day0Year22;
 impl Day for Day0Year22 {
-    fn first_puzzle(&self, input: &mut dyn BufRead) -> String {
+    fn first_puzzle(&self, input: &mut BufReader<File>) -> String {
         let mut line = String::new();
         input.read_line(&mut line).expect("Failed to read line:");
         line
     }
 
-    fn second_puzzle(&self, input: &mut dyn BufRead) -> String {
+    fn second_puzzle(&self, input: &mut BufReader<File>) -> String {
         let mut line = String::new();
         input.read_line(&mut line).expect("Failed to read line:");
         line.trim().to_string()
@@ -36,7 +40,7 @@ impl Day for Day0Year22 {
 }
 
 fn main() {
-    let days: Vec<&dyn Day> = vec![&Day0Year22 {}];
+    let days: Vec<&dyn Day> = vec![&DayOne2022];
     println!("Current puzzles:");
     for (i, day) in days.iter().enumerate() {
         println!("{}: Day {}, Year {}", i + 1, day.day(), day.year());
@@ -57,7 +61,7 @@ fn main() {
             .expect("error: unable to read user input");
         let formatted_input = input.trim();
         if formatted_input == "one" || formatted_input == "1" {
-            let what_the_fuck = format!("input/y{}-d{}-1.txt", day.year(), day.day());
+            let what_the_fuck = format!("input/y{}-d{}.txt", day.year(), day.day());
             let path = Path::new(&what_the_fuck);
             let file = match File::open(path) {
                 Err(why) => panic!("Couldn't open {}: {}", path.display(), why),
@@ -68,14 +72,14 @@ fn main() {
                 day.first_puzzle(&mut BufReader::new(file))
             );
         } else if formatted_input == "two" || formatted_input == "2" {
-            let what_the_fuck = format!("input/y{}-d{}-2.txt", day.year(), day.day());
+            let what_the_fuck = format!("input/y{}-d{}.txt", day.year(), day.day());
             let path = Path::new(&what_the_fuck);
             let file = match File::open(path) {
                 Err(why) => panic!("Couldn't open {}: {}", path.display(), why),
                 Ok(file) => file,
             };
             println!(
-                "The awnser is\n{}",
+                "The awnser is {}",
                 day.second_puzzle(&mut BufReader::new(file))
             );
         } else {
