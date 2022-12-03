@@ -4,9 +4,10 @@ use std::{
     path::Path,
 };
 
-use crate::{day_one::DayOne2022, day_two::DayTwo2022};
+use crate::{day_one::DayOne2022, day_three::DayThree2022, day_two::DayTwo2022};
 
 mod day_one;
+mod day_three;
 mod day_two;
 
 trait Day {
@@ -41,7 +42,7 @@ impl Day for Day0Year22 {
 }
 
 fn main() {
-    let days: Vec<&dyn Day> = vec![&DayOne2022, &DayTwo2022];
+    let days: Vec<&dyn Day> = vec![&DayOne2022, &DayTwo2022, &DayThree2022];
     println!("Current puzzles:");
     for (i, day) in days.iter().enumerate() {
         println!("{}: Day {}, Year {}", i + 1, day.day(), day.year());
@@ -49,17 +50,13 @@ fn main() {
     print!("What day do you want to run?: ");
     let mut input = String::new();
     stdout().flush().expect("WTF");
-    stdin()
-        .read_line(&mut input)
-        .expect("error: unable to read user input");
+    stdin().read_line(&mut input).expect("error: unable to read user input");
     if let Ok(option) = input.trim().parse::<usize>() {
         let mut input = String::new();
         let day = days[option - 1];
         print!("Puzzle one or two?: ");
         stdout().flush().expect("WTF");
-        stdin()
-            .read_line(&mut input)
-            .expect("error: unable to read user input");
+        stdin().read_line(&mut input).expect("error: unable to read user input");
         let formatted_input = input.trim();
         if formatted_input == "one" || formatted_input == "1" {
             let what_the_fuck = format!("input/y{}-d{}.txt", day.year(), day.day());
@@ -68,10 +65,7 @@ fn main() {
                 Err(why) => panic!("Couldn't open {}: {}", path.display(), why),
                 Ok(file) => file,
             };
-            println!(
-                "The awnser is\n{}",
-                day.first_puzzle(&mut BufReader::new(file))
-            );
+            println!("The awnser is\n{}", day.first_puzzle(&mut BufReader::new(file)));
         } else if formatted_input == "two" || formatted_input == "2" {
             let what_the_fuck = format!("input/y{}-d{}.txt", day.year(), day.day());
             let path = Path::new(&what_the_fuck);
@@ -79,10 +73,7 @@ fn main() {
                 Err(why) => panic!("Couldn't open {}: {}", path.display(), why),
                 Ok(file) => file,
             };
-            println!(
-                "The awnser is {}",
-                day.second_puzzle(&mut BufReader::new(file))
-            );
+            println!("The awnser is {}", day.second_puzzle(&mut BufReader::new(file)));
         } else {
             println!("Invalid option {}", input.trim());
         }
