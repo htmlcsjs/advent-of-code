@@ -4,8 +4,9 @@ use std::{
     path::Path,
 };
 
-use crate::{day_one::DayOne2022, day_three::DayThree2022, day_two::DayTwo2022};
+use crate::{day_four::DayFour2022, day_one::DayOne2022, day_three::DayThree2022, day_two::DayTwo2022};
 
+mod day_four;
 mod day_one;
 mod day_three;
 mod day_two;
@@ -42,7 +43,7 @@ impl Day for Day0Year22 {
 }
 
 fn main() {
-    let days: Vec<&dyn Day> = vec![&DayOne2022, &DayTwo2022, &DayThree2022];
+    let days: Vec<&dyn Day> = vec![&DayOne2022, &DayTwo2022, &DayThree2022, &DayFour2022];
     println!("Current puzzles:");
     for (i, day) in days.iter().enumerate() {
         println!("{}: Day {}, Year {}", i + 1, day.day(), day.year());
