@@ -6,24 +6,9 @@ version = 3
 name = "advent-of-code"
 version = "0.1.0"
 dependencies = [
- "error_macro",
- "strum",
-]
-
-[[package]]
-name = "error_macro"
-version = "0.1.0"
-dependencies = [
- "proc-macro2",
  "quote",
+ "strum",
  "syn",
-]
-
-[[package]]
-name = "error_macro_test"
-version = "0.0.0"
-dependencies = [
- "error_macro",
 ]
 
 [[package]]
