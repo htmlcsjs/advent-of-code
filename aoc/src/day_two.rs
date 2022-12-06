@@ -3,11 +3,11 @@ use std::{
     io::{BufRead, BufReader},
 };
 
-use crate::{Day, Err};
+use crate::{AOCError, Day};
 
 pub struct DayTwo2022;
 impl Day for DayTwo2022 {
-    fn first_puzzle(&self, input: &mut BufReader<File>) -> Result<String, Err> {
+    fn first_puzzle(&self, input: &mut BufReader<File>) -> Result<String, AOCError> {
         let mut score: u32 = 0;
         for (line, r) in input.lines().enumerate() {
             let s = r?;
@@ -30,7 +30,7 @@ impl Day for DayTwo2022 {
         Ok(score.to_string())
     }
 
-    fn second_puzzle(&self, input: &mut BufReader<File>) -> Result<String, Err> {
+    fn second_puzzle(&self, input: &mut BufReader<File>) -> Result<String, AOCError> {
         let mut score: u32 = 0;
         for (line, r) in input.lines().enumerate() {
             let s = r?;

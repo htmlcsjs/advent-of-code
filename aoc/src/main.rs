@@ -6,10 +6,12 @@ use std::{
 };
 
 use ::error_macro::ErrorWrapper;
-use strum::Display;
 
-use crate::{day_four::DayFour2022, day_one::DayOne2022, day_three::DayThree2022, day_two::DayTwo2022};
+use crate::{
+    day_five::DayFive2022, day_four::DayFour2022, day_one::DayOne2022, day_three::DayThree2022, day_two::DayTwo2022,
+};
 
+mod day_five;
 mod day_four;
 mod day_one;
 mod day_three;
@@ -17,21 +19,23 @@ mod day_two;
 mod error_macro;
 
 trait Day {
-    fn first_puzzle(&self, input: &mut BufReader<File>) -> Result<String, Err>;
-    fn second_puzzle(&self, input: &mut BufReader<File>) -> Result<String, Err>;
+    fn first_puzzle(&self, input: &mut BufReader<File>) -> Result<String, AOCError>;
+    fn second_puzzle(&self, input: &mut BufReader<File>) -> Result<String, AOCError>;
 
     fn day(&self) -> i16;
     fn year(&self) -> i16;
 }
 
-#[derive(Display, Debug, ErrorWrapper)]
-pub enum Err {
+#[derive(Debug, ErrorWrapper)]
+pub enum AOCError {
     IoError(io::Error),
     IntParseError(ParseIntError),
+    LogicError(String),
+    RegexError(regex::Error),
 }
 
 fn main() {
-    let days: Vec<&dyn Day> = vec![&DayOne2022, &DayTwo2022, &DayThree2022, &DayFour2022];
+    let days: Vec<&dyn Day> = vec![&DayOne2022, &DayTwo2022, &DayThree2022, &DayFour2022, &DayFive2022];
     println!("Current puzzles:");
     for (i, day) in days.iter().enumerate() {
         println!("{}: Day {}, Year {}", i + 1, day.day(), day.year());
@@ -56,7 +60,7 @@ fn main() {
             };
             match day.first_puzzle(&mut BufReader::new(file)) {
                 Ok(s) => println!("The awnser is {}", s),
-                Err(e) => println!("There was an error executing Day {} puzzle 1\n:{}", day.day(), e),
+                Err(e) => println!("There was an error executing Day {} puzzle 1:\n{:?}", day.day(), e),
             }
         } else if formatted_input == "two" || formatted_input == "2" {
             let what_the_fuck = format!("input/y{}-d{}.txt", day.year(), day.day());
@@ -67,7 +71,7 @@ fn main() {
             };
             match day.second_puzzle(&mut BufReader::new(file)) {
                 Ok(s) => println!("The awnser is {}", s),
-                Err(e) => println!("There was an error executing Day {} puzzle 2\n:{}", day.day(), e),
+                Err(e) => println!("There was an error executing Day {} puzzle 2:\n{:?}", day.day(), e),
             }
         } else {
             println!("Invalid option {}", input.trim());

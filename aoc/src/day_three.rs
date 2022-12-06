@@ -3,11 +3,11 @@ use std::{
     io::{self, BufRead, BufReader},
 };
 
-use crate::{Day, Err};
+use crate::{AOCError, Day};
 
 pub struct DayThree2022;
 impl Day for DayThree2022 {
-    fn first_puzzle(&self, input: &mut BufReader<File>) -> Result<String, Err> {
+    fn first_puzzle(&self, input: &mut BufReader<File>) -> Result<String, AOCError> {
         let mut priorities: Vec<usize> = Vec::new();
         let alphabet = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         for r in input.lines() {
@@ -31,7 +31,7 @@ impl Day for DayThree2022 {
         Ok(priorities.iter().sum::<usize>().to_string())
     }
 
-    fn second_puzzle(&self, input: &mut BufReader<File>) -> Result<String, Err> {
+    fn second_puzzle(&self, input: &mut BufReader<File>) -> Result<String, AOCError> {
         let mut priorities: Vec<usize> = Vec::new();
         let alphabet = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         let lines: Vec<String> = input.lines().collect::<Result<Vec<_>, io::Error>>()?;
