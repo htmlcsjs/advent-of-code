@@ -11,7 +11,7 @@ impl Day for DayFour2022 {
         let mut count: u32 = 0;
         for r in input.lines() {
             let mut info: Vec<i32> = Vec::new();
-            for elememnt in r?.replace(",", "-").split("-") {
+            for elememnt in r?.replace(',', "-").split('-') {
                 if let Ok(sus) = elememnt.parse::<i32>() {
                     info.push(sus);
                 }
@@ -32,7 +32,7 @@ impl Day for DayFour2022 {
         let mut count: u32 = 0;
         for r in input.lines() {
             let mut info: Vec<i32> = Vec::new();
-            for elememnt in r?.replace(",", "-").split("-") {
+            for elememnt in r?.replace(',', "-").split('-') {
                 if let Ok(sus) = elememnt.parse::<i32>() {
                     info.push(sus);
                 }
@@ -42,7 +42,7 @@ impl Day for DayFour2022 {
             }
             let e1: Vec<i32> = (info[0]..=info[1]).collect();
             let e2: Vec<i32> = (info[2]..=info[3]).collect();
-            if e1.iter().map(|i| e2.contains(i)).fold(false, |acc, i| (acc || i)) {
+            if e1.iter().map(|i| e2.contains(i)).any(|i| i) {
                 count += 1;
             }
         }
