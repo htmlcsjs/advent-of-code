@@ -8,13 +8,14 @@ use std::{
 use ::error_macro::ErrorWrapper;
 
 use crate::{
-    day_five::DayFive2022, day_four::DayFour2022, day_one::DayOne2022, day_six::DaySix2022, day_three::DayThree2022,
-    day_two::DayTwo2022,
+    day_five::DayFive2022, day_four::DayFour2022, day_one::DayOne2022, day_seven::DaySeven2022, day_six::DaySix2022,
+    day_three::DayThree2022, day_two::DayTwo2022,
 };
 
 mod day_five;
 mod day_four;
 mod day_one;
+mod day_seven;
 mod day_six;
 mod day_three;
 mod day_two;
@@ -37,7 +38,8 @@ pub enum AOCError {
 }
 
 fn main() {
-    let days: Vec<&dyn Day> = vec![&DayOne2022, &DayTwo2022, &DayThree2022, &DayFour2022, &DayFive2022, &DaySix2022];
+    let days: Vec<&dyn Day> =
+        vec![&DayOne2022, &DayTwo2022, &DayThree2022, &DayFour2022, &DayFive2022, &DaySix2022, &DaySeven2022];
     println!("Current puzzles:");
     for (i, day) in days.iter().enumerate() {
         println!("{}: Day {}, Year {}", i + 1, day.day(), day.year());
