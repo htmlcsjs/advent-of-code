@@ -8,13 +8,14 @@ use std::{
 use ::error_macro::ErrorWrapper;
 
 use crate::{
-    day_eight::DayEight2022, day_five::DayFive2022, day_four::DayFour2022, day_one::DayOne2022,
+    day_eight::DayEight2022, day_five::DayFive2022, day_four::DayFour2022, day_nine::DayNine2022, day_one::DayOne2022,
     day_seven::DaySeven2022, day_six::DaySix2022, day_three::DayThree2022, day_two::DayTwo2022,
 };
 
 mod day_eight;
 mod day_five;
 mod day_four;
+mod day_nine;
 mod day_one;
 mod day_seven;
 mod day_six;
@@ -48,6 +49,7 @@ fn main() {
         &DaySix2022,
         &DaySeven2022,
         &DayEight2022,
+        &DayNine2022,
     ];
     println!("Current puzzles:");
     for (i, day) in days.iter().enumerate() {
