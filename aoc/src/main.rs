@@ -1,7 +1,7 @@
 use std::{
     fs::File,
     io::{self, BufReader, Seek},
-    num::ParseIntError,
+    num::{ParseFloatError, ParseIntError},
     path::Path,
     time::Instant,
 };
@@ -10,11 +10,13 @@ use ::error_macro::ErrorWrapper;
 use itertools::Itertools;
 
 use crate::{
-    day_eight::DayEight2022, day_five::DayFive2022, day_four::DayFour2022, day_nine::DayNine2022, day_one::DayOne2022,
-    day_seven::DaySeven2022, day_six::DaySix2022, day_ten::DayTen2022, day_three::DayThree2022, day_two::DayTwo2022,
+    day_eight::DayEight2022, day_eleven::DayEleven2022, day_five::DayFive2022, day_four::DayFour2022,
+    day_nine::DayNine2022, day_one::DayOne2022, day_seven::DaySeven2022, day_six::DaySix2022, day_ten::DayTen2022,
+    day_three::DayThree2022, day_two::DayTwo2022,
 };
 
 mod day_eight;
+mod day_eleven;
 mod day_five;
 mod day_four;
 mod day_nine;
@@ -38,6 +40,7 @@ trait Day {
 pub enum AOCError {
     IoError(io::Error),
     IntParseError(ParseIntError),
+    FloatParseError(ParseFloatError),
     LogicError(String),
     RegexError(regex::Error),
 }
@@ -54,6 +57,7 @@ fn main() {
         &DayEight2022,
         &DayNine2022,
         &DayTen2022,
+        &DayEleven2022,
     ];
     let mut table =
         vec!["Day", "A Result", "B Result", "A Time", "B Time"].into_iter().map(|x| vec![x.to_string()]).collect_vec();
