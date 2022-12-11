@@ -40,13 +40,10 @@ impl Day for DayTwo2022 {
                 let plr_shape = self.skuffed_rps(opp_shape, outcome);
                 score += plr_shape;
                 if outcome == 0 {
-                    println!("We drew, adding {} to score", 3);
                     score += 3;
                 } else if outcome.is_negative() {
-                    println!("We lost, gaining no score");
                     continue;
                 } else if outcome.is_positive() {
-                    println!("We won, adding {} to score", 6);
                     score += 6;
                 }
             } else {

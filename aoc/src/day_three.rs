@@ -22,10 +22,8 @@ impl Day for DayThree2022 {
                 }
             }
             if let Some(p) = alphabet.find(shared) {
-                println!("\"{}\" and \"{}\" share \"{}\", with a priority of {}", first, second, shared, p);
                 priorities.push(p);
             } else {
-                println!("\"{}\" and \"{}\" share \"{}\", with no priority", first, second, shared);
             }
         }
         Ok(priorities.iter().sum::<usize>().to_string())
@@ -47,7 +45,6 @@ impl Day for DayThree2022 {
             if let Some(p) = alphabet.find(badge) {
                 priorities.push(p);
             }
-            println!("Group \"{}\", \"{}\", \"{}\" has badge {}", a, b, c, badge);
         }
         Ok(priorities.iter().sum::<usize>().to_string())
     }

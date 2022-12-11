@@ -1,11 +1,12 @@
 use std::{
     fs::File,
-    io::{self, stdin, stdout, BufReader, Write},
+    io::{self, BufReader, Seek},
     num::ParseIntError,
-    path::Path,
+    path::Path, time::Instant,
 };
 
 use ::error_macro::ErrorWrapper;
+use itertools::Itertools;
 
 use crate::{
     day_eight::DayEight2022, day_five::DayFive2022, day_four::DayFour2022, day_nine::DayNine2022, day_one::DayOne2022,
@@ -51,47 +52,55 @@ fn main() {
         &DayEight2022,
         &DayNine2022,
     ];
-    println!("Current puzzles:");
-    for (i, day) in days.iter().enumerate() {
-        println!("{}: Day {}, Year {}", i + 1, day.day(), day.year());
-    }
-    print!("What day do you want to run?: ");
-    let mut input = String::new();
-    stdout().flush().expect("WTF");
-    stdin().read_line(&mut input).expect("error: unable to read user input");
-    if let Ok(option) = input.trim().parse::<usize>() {
-        let mut input = String::new();
-        let day = days[option - 1];
-        print!("Puzzle one or two?: ");
-        stdout().flush().expect("WTF");
-        stdin().read_line(&mut input).expect("error: unable to read user input");
-        let formatted_input = input.trim();
-        if formatted_input == "one" || formatted_input == "1" {
-            let what_the_fuck = format!("input/y{}-d{}.txt", day.year(), day.day());
-            let path = Path::new(&what_the_fuck);
-            let file = match File::open(path) {
-                Err(why) => panic!("Couldn't open {}: {}", path.display(), why),
-                Ok(file) => file,
-            };
-            match day.first_puzzle(&mut BufReader::new(file)) {
-                Ok(s) => println!("The awnser is {}", s),
-                Err(e) => println!("There was an error executing Day {} puzzle 1:\n{:?}", day.day(), e),
-            }
-        } else if formatted_input == "two" || formatted_input == "2" {
-            let what_the_fuck = format!("input/y{}-d{}.txt", day.year(), day.day());
-            let path = Path::new(&what_the_fuck);
-            let file = match File::open(path) {
-                Err(why) => panic!("Couldn't open {}: {}", path.display(), why),
-                Ok(file) => file,
-            };
-            match day.second_puzzle(&mut BufReader::new(file)) {
-                Ok(s) => println!("The awnser is {}", s),
-                Err(e) => println!("There was an error executing Day {} puzzle 2:\n{:?}", day.day(), e),
-            }
-        } else {
-            println!("Invalid option {}", input.trim());
+    let mut table = vec!["Day", "A Result", "B Result", "A Time", "B Time"].into_iter().map(|x| vec![x.to_string()]).collect_vec();
+    
+    for day in days {
+        table[0].push(day.day().to_string());
+
+        let raw_path = format!("input/y{}-d{}.txt", day.year(), day.day());
+        let path = Path::new(&raw_path);
+        let file = match File::open(path) {
+            Err(_) => {
+                table[1].push(format!("Couldnt read file {}", path.display()));
+                table[2].push("<-".to_string());
+                table[3].push("0 s".to_string());
+                table[4].push("0 s".to_string()); 
+                continue;
+            },
+            Ok(file) => file,
+        };
+        let mut buf_reader = BufReader::new(file);
+        
+        let p1start = Instant::now();
+        match day.first_puzzle(&mut buf_reader) {
+            Ok(a) => table[1].push(a),
+            Err(e) => table[1].push(format!("Error: {:?}", e)),
         }
-    } else {
-        println!("Invalid option {}", input.trim());
+        table[3].push(format!("{:>09.3?}", p1start.elapsed()));
+        if let Err(e) = buf_reader.rewind() {
+            table[2].push(format!("Error rewinding: {}", e));
+            table[4].push("0 s".to_string());
+        }
+
+        let p2start = Instant::now();
+        match day.second_puzzle(&mut buf_reader) {
+            Ok(a) => table[2].push(a),
+            Err(e) => table[2].push(format!("Error: {:?}", e)),
+        }
+        table[4].push(format!("{:>09.3?}", p2start.elapsed()));
     }
+
+    let widths = table.iter().map(|x| x.iter().max_by(|x,y| x.len().cmp(&y.len())).unwrap()).map(|x| x.len()).collect_vec();
+    println!("{}", "╔═".to_string() + &widths.iter().map(|x| "═".repeat(*x)).join("═╦═") + "═╗");
+    println!("{}", "║ ".to_string() + &table.iter().enumerate().map(|(pos, x)| pad_string(&x[0], widths[pos])).join(" ║ ") + " ║");
+    println!("{}", "╠═".to_string() + &widths.iter().map(|x| "═".repeat(*x)).join("═╬═") + "═╣");
+    for i in 1..table[0].len() {
+        println!("{}", "║ ".to_string() + &table.iter().enumerate().map(|(pos, x)| pad_string(&x[i], widths[pos])).join(" ║ ") + " ║");
+    }
+    println!("{}", "╚═".to_string() + &widths.iter().map(|x| "═".repeat(*x)).join("═╩═") + "═╝");
+}
+
+fn pad_string(input: &String, length: usize) -> String {
+    let pad_len = length - input.chars().count();
+    input.to_string() + &" ".repeat(pad_len)
 }

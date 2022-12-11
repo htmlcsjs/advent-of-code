@@ -51,7 +51,6 @@ where
     instrs.remove(0);
     stack.resize(info.pop().expect("wtf").replace(' ', "").len(), Vec::new());
     let sus: Vec<String> = info.iter().map(|x| x.replace("    ", " [_]")).collect();
-    println!("{}", sus.join("\n"));
     sus.iter()
         .map(|x| x.replace(' ', ""))
         .map(|x| x.replace('[', ""))
@@ -96,7 +95,6 @@ where
                 return Err(e);
             }
             if let Some((count, source, dest)) = possible {
-                println!("count: {}, source: {}, dest: {}, line \"{}\"", count, source, dest, instr);
                 executor(count, source, dest, &mut stack);
             }
         } else {
