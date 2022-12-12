@@ -32,7 +32,7 @@ impl Day for DaySeven2022 {
 }
 
 fn load_fs(input: &mut BufReader<File>) -> Result<FSType, AOCError> {
-    let ls_regex = Regex::new("\\$ cd (.+)")?;
+    let cd_regex = Regex::new("\\$ cd (.+)")?;
     let file_regex = Regex::new("(\\d+) (.+)")?;
     let dir_regex = Regex::new("dir (.+)")?;
     let mut path: Vec<String> = Vec::new();
@@ -40,8 +40,8 @@ fn load_fs(input: &mut BufReader<File>) -> Result<FSType, AOCError> {
     for maybe in input.lines() {
         let line = maybe?;
         if line.starts_with('$') {
-            if ls_regex.is_match(&line) {
-                let s = ls_regex.captures(&line).unwrap();
+            if cd_regex.is_match(&line) {
+                let s = cd_regex.captures(&line).unwrap();
                 match &s[1] {
                     ".." => {
                         path.pop();
