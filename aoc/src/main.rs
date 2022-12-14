@@ -12,7 +12,7 @@ use itertools::Itertools;
 use crate::{
     day_eight::DayEight2022, day_eleven::DayEleven2022, day_five::DayFive2022, day_four::DayFour2022,
     day_nine::DayNine2022, day_one::DayOne2022, day_seven::DaySeven2022, day_six::DaySix2022, day_ten::DayTen2022,
-    day_three::DayThree2022, day_two::DayTwo2022,
+    day_three::DayThree2022, day_twelve::DayTwelve2022, day_two::DayTwo2022,
 };
 
 mod day_eight;
@@ -25,6 +25,7 @@ mod day_seven;
 mod day_six;
 mod day_ten;
 mod day_three;
+mod day_twelve;
 mod day_two;
 mod error_macro;
 
@@ -43,6 +44,7 @@ pub enum AOCError {
     FloatParseError(ParseFloatError),
     LogicError(String),
     RegexError(regex::Error),
+    JSONError(serde_json::Error),
 }
 
 fn main() {
@@ -58,6 +60,7 @@ fn main() {
         &DayNine2022,
         &DayTen2022,
         &DayEleven2022,
+        &DayTwelve2022,
     ];
     let mut table =
         vec!["Day", "A Result", "B Result", "A Time", "B Time"].into_iter().map(|x| vec![x.to_string()]).collect_vec();

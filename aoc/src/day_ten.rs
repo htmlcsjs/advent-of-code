@@ -56,7 +56,7 @@ impl Day for DayTen2022 {
                 rendered += "\n"
             }
             if ((pixel - 1)..=(pixel + 1)).contains(&x) {
-                rendered += "#";
+                rendered += "▒";
             } else {
                 rendered += " ";
             }
