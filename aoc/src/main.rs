@@ -9,11 +9,12 @@ use std::{
 use ::error_macro::ErrorWrapper;
 use itertools::Itertools;
 
+#[allow(unused_imports)]
 use crate::{
     day_eight::DayEight2022, day_eleven::DayEleven2022, day_fifteen::DayFifteen2022, day_five::DayFive2022,
     day_four::DayFour2022, day_fourteen::DayFourteen2022, day_nine::DayNine2022, day_one::DayOne2022,
-    day_seven::DaySeven2022, day_six::DaySix2022, day_ten::DayTen2022, day_thirteen::DayThirteen2022,
-    day_three::DayThree2022, day_twelve::DayTwelve2022, day_two::DayTwo2022,
+    day_seven::DaySeven2022, day_six::DaySix2022, day_sixteen::DaySixteen2022, day_ten::DayTen2022,
+    day_thirteen::DayThirteen2022, day_three::DayThree2022, day_twelve::DayTwelve2022, day_two::DayTwo2022,
 };
 
 mod day_eight;
@@ -26,6 +27,7 @@ mod day_nine;
 mod day_one;
 mod day_seven;
 mod day_six;
+mod day_sixteen;
 mod day_ten;
 mod day_thirteen;
 mod day_three;
@@ -68,10 +70,12 @@ fn main() {
         &DayThirteen2022,
         &DayFourteen2022,
         &DayFifteen2022,
+        &DaySixteen2022,
     ];
     let mut table =
         vec!["Day", "A Result", "B Result", "A Time", "B Time"].into_iter().map(|x| vec![x.to_string()]).collect_vec();
 
+    let start = Instant::now();
     for day in days {
         table[0].push(day.day().to_string());
 
@@ -107,6 +111,7 @@ fn main() {
         }
         table[4].push(format!("{:>09.3?}", p2start.elapsed()));
     }
+    let time = start.elapsed();
 
     let widths =
         table.iter().map(|x| x.iter().max_by(|x, y| x.len().cmp(&y.len())).unwrap()).map(|x| x.len()).collect_vec();
@@ -125,6 +130,7 @@ fn main() {
         );
     }
     println!("{}", "╚═".to_string() + &widths.iter().map(|x| "═".repeat(*x)).join("═╩═") + "═╝");
+    println!("Took {:.3?} to execute them all", time);
 }
 
 fn pad_string(input: &String, length: usize) -> String {
